@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🤟 ISL Translator App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <div class="card">
+      <header class="card-header">
+        <h1>🤟 ISL Translator</h1>
+        <p class="subtitle">Bridging the gap between Signs and Speech</p>
+      </header>
+
+      <div class="mode-switch">
+        <button id="signToTextBtn" class="active">Sign → Text</button>
+        <button id="textToSignBtn">Text → Sign</button>
+      </div>
+
+      <!-- SIGN TO TEXT MODE -->
+      <div id="signToTextMode" class="mode active">
+        <div class="camera-box">
+          <video id="camera" autoplay muted playsinline></video>
+          <div class="camera-controls">
+            <button id="startCameraBtn">📸 Start Camera</button>
+            <button id="stopCameraBtn">⛔ Stop Camera</button>
+          </div>
+        </div>
+        <div id="recognizedSigns" class="recognized"></div>
+        <div id="translatedText" class="output-box"></div>
+      </div>
+
+      <!-- TEXT TO SIGN MODE -->
+      <div id="textToSignMode" class="mode">
+        <textarea id="inputText" placeholder="Type something..."></textarea>
+        <div class="controls">
+          <button id="playAvatarBtn">🧍 Play Avatar</button>
+          <button id="speakBtn">🔊 Speak</button>
+          <button id="recordBtn">🎙️ Voice Input</button>
+        </div>
+        <div id="avatarArea">
+          <div class="avatar">
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="arm-left"></div>
+            <div class="arm-right"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="toast" class="toast">Notification</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
