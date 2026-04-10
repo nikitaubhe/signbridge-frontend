@@ -66,7 +66,7 @@
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import Webcam from 'react-webcam';
-import { translateSign } from '../services/api';
+import { fetchPrediction } from '../services/api';
 
 const Camera = ({ onTranslation, showToast }) => {
   const webcamRef = useRef(null);
@@ -81,7 +81,7 @@ const Camera = ({ onTranslation, showToast }) => {
     isProcessingRef.current = true;
 
     try {
-      const result = await translateSign(imageSrc);
+      const result = await fetchPrediction(imageSrc);
 
       if (
         result.success &&
