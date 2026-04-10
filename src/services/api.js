@@ -37,41 +37,53 @@
 // };
 
 
-import axios from 'axios';
 
-// 🔥 CHANGE BASE URL TO FLASK
+const FLASK_URL = import.meta.env.VITE_FLASK_URL || 'https://signbridge-backend-1.onrender.com';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
-
-export const translateSign = async (imageData) => {
+export const checkHealth = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/predict`, {
-      frame: imageData, // 🔥 VERY IMPORTANT (must match Flask)
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Translation error:', error);
-    return {
-      success: false,
-      message: 'Backend error',
-    };
+    const response = await fetch(`${JAVA_API_URL}/health`);
+    return await response.json();
+  } catch (e) {
+    throw new Error('Backend Unavailable');
   }
 };
 
-// (OPTIONAL) You can keep this if you still use it
-export const textToSign = async (text) => {
-  console.warn("Text-to-sign not connected to Flask yet");
-  return {
-    success: false,
-    message: "Not implemented",
-  };
+export const fetchDictionary = async () => {
+  try {
+    const response = await fetch(`${JAVA_API_URL}/dictionary`);
+    if (!response.ok) throw new Error('Failed to fetch dictionary');
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+    return ['Hello', 'Hi', 'Good evening', 'How are u', 'I am fine', 'I need water', 'Thank You']; // Fallback
+  }
 };
 
-// (OPTIONAL) Not needed now
-export const getHistory = async () => {
-  return [];
+export const fetchPrediction = async (frameData) => {
+  try {
+    const response = await fetch(`${FLASK_URL}/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        frame: frameData   // ✅ IMPORTANT FIX
+      })
+    });
+
+    if (!response.ok) throw new Error('Prediction API Error');
+
+    return await response.json();
+
+  } catch (e) {
+    console.error('Prediction call failed', e);
+    return null;
+  }
 };
-axios.post(url, data, {
-  timeout: 15000   // 15 sec
-});
+
+export const resetPrediction = async () => {
+  try {
+    await fetch(`${FLASK_URL}/reset`, { method: 'POST' });
+  } catch (e) {
+    console.error('Reset call failed', e);
+  }
+};
