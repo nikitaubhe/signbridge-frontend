@@ -52,7 +52,10 @@ export const fetchPrediction = async (frameData) => {
       })
     });
 
-    if (!response.ok) throw new Error('Prediction API Error');
+    if (!response.ok) {
+      console.error(`Prediction API Error: ${response.status}`, await response.text());
+      return null; // return null instead of throwing, Camera.jsx handles it
+    }
 
     return await response.json();
 

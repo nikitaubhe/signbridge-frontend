@@ -83,6 +83,8 @@ const Camera = ({ onTranslation, showToast }) => {
     try {
       const result = await fetchPrediction(imageSrc);
 
+      if (!result) return; // 🛡️ guard against null (500 errors, network failures)
+
       if (
         result.success &&
         !result.requiresMoreFrames &&
