@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './avatar-renderer.js';
 import Camera from './components/Camera';
 import TranslationOutput from './components/TranslationOutput';
 import TextToSign from './components/TextToSign';
@@ -20,35 +21,35 @@ function App() {
       <div className="app-container">
         <div className="card">
           {/* Header */}
-          
+
           <div className="card-header">
-               <div className="header-horizontal">
-                   <div className="logo-circle">
-                     <img src={logo} alt="SignBridge Logo" className="app-logo" />
-                   </div>
-               <div className="header-text">
-                  <h1>SignBridge</h1>
-                  <p className="subtitle">Bridging sign and speech!</p>
-               </div>
+            <div className="header-horizontal">
+              <div className="logo-circle">
+                <img src={logo} alt="SignBridge Logo" className="app-logo" />
+              </div>
+              <div className="header-text">
+                <h1>SignBridge</h1>
+                <p className="subtitle">Bridging sign and speech!</p>
+              </div>
+            </div>
           </div>
-</div>
 
           {/* Mode Switch */}
           {/* Mode Switch */}
-    <div className="mode-switch">
-  <button
-    className={activeTab === 'sign' ? 'active' : ''}
-    onClick={() => setActiveTab('sign')}
-  >
-    🎥 Sign → Text
-  </button>
-  <button
-    className={activeTab === 'text' ? 'active' : ''}
-    onClick={() => setActiveTab('text')}
-  >
-    ✏️ Text → Sign
-  </button>
-</div>
+          <div className="mode-switch">
+            <button
+              className={activeTab === 'sign' ? 'active' : ''}
+              onClick={() => setActiveTab('sign')}
+            >
+              🎥 Sign → Text
+            </button>
+            <button
+              className={activeTab === 'text' ? 'active' : ''}
+              onClick={() => setActiveTab('text')}
+            >
+              ✏️ Text → Sign
+            </button>
+          </div>
 
 
           {/* Content */}
