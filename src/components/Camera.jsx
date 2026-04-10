@@ -70,14 +70,24 @@ import { translateSign } from '../services/api';
 
 const Camera = ({ onTranslation, showToast }) => {
   const webcamRef = useRef(null);
+  const isProcessingRef = useRef(false); // ✅ prevent multiple requests
   const [isStreaming, setIsStreaming] = useState(true);
 
-  // ✅ send frame
+  // ✅ Send frame safely (NO OVERLOAD)
   const sendFrameToBackend = useCallback(async (imageSrc) => {
+    // 🚨 Prevent multiple parallel requests
+    if (isProcessingRef.current) return;
+
+    isProcessingRef.current = true;
+
     try {
       const result = await translateSign(imageSrc);
 
-      if (result.success && !result.requiresMoreFrames && result.predictedSign) {
+      if (
+        result.success &&
+        !result.requiresMoreFrames &&
+        result.predictedSign
+      ) {
         onTranslation(result);
       }
 
@@ -85,36 +95,35 @@ const Camera = ({ onTranslation, showToast }) => {
       console.error('Error sending frame:', error);
       showToast('❌ Backend error');
     }
+
+    isProcessingRef.current = false; // ✅ release lock
   }, [onTranslation, showToast]);
 
-  // ✅ continuous capture
+  // ✅ Controlled continuous capture (SAFE)
   useEffect(() => {
     let interval;
 
     if (isStreaming) {
       interval = setInterval(() => {
-        if (webcamRef.current) {
+        if (webcamRef.current && !isProcessingRef.current) {
           const imageSrc = webcamRef.current.getScreenshot();
+
           if (imageSrc) {
             sendFrameToBackend(imageSrc);
           }
         }
-      }, 1000); // ⚡ slower = better performance
-
-
-
+      }, 1500); // 🔥 IMPORTANT: 1.5 sec delay (prevents backend crash)
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-
   }, [isStreaming, sendFrameToBackend]);
 
-  // ✅ reset function (INSIDE component)
+  // ✅ Reset model (FIXED URL)
   const resetModel = async () => {
     try {
-      await fetch('http://127.0.0.1:5000/reset', {
+      await fetch('https://signbridge-backend-1.onrender.com/reset', {
         method: 'POST',
       });
       showToast('🔄 Reset successful');
@@ -124,7 +133,6 @@ const Camera = ({ onTranslation, showToast }) => {
     }
   };
 
-  // ✅ RETURN MUST BE INSIDE COMPONENT
   return (
     <div className="camera-container">
       <div className="section-label">🎥 Camera Feed</div>
