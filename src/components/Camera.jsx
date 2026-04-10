@@ -99,7 +99,10 @@ const Camera = ({ onTranslation, showToast }) => {
             sendFrameToBackend(imageSrc);
           }
         }
-      }, 1200); // ⚡ slower = better performance
+      }, 1000); // ⚡ slower = better performance
+
+
+
     }
 
     return () => {

@@ -72,3 +72,6 @@ export const textToSign = async (text) => {
 export const getHistory = async () => {
   return [];
 };
+axios.post(url, data, {
+  timeout: 15000   // 15 sec
+});
