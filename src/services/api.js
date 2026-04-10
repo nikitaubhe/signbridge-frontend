@@ -38,7 +38,7 @@
 
 
 
-const FLASK_URL = import.meta.env.VITE_FLASK_URL || 'https://signbridge-backend-1.onrender.com';
+const FLASK_URL = "https://signbridge-backend-1.onrender.com";
 
 
 

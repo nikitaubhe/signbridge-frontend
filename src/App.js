@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './avatar-renderer.js';
 import Camera from './components/Camera';
 import TranslationOutput from './components/TranslationOutput';
 import TextToSign from './components/TextToSign';
